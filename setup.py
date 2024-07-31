@@ -51,8 +51,8 @@ setup(
         "all": [req for requirements in extras.values() for req in requirements],
     },
     project_urls={
-        "Source": "",
-        "Tracker": "",
+        "Source": "https://github.com/Blazkowiz47/torch-framework-python",
+        "Tracker": "https://github.com/Blazkowiz47/torch-framework-python/issues",
     },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
