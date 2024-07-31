@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: dl-framework-generator
+Version: 0.0.0
+Summary: Deep learning project structure generator.
+Home-page: 
+Author: Sushrut Patwardhan
+Maintainer: Sushrut Patwardhan
+License: MIT
+Project-URL: Source, 
+Project-URL: Tracker, 
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Typing :: Typed
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: twine>=3.4.1; extra == "dev"
+Provides-Extra: all
+Requires-Dist: twine>=3.4.1; extra == "all"

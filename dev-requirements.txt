@@ -1,0 +1,3 @@
+tox
+twine<=5.0.0
+wheel
