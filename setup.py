@@ -31,7 +31,7 @@ setup(
     author="Sushrut Patwardhan",
     maintainer="Sushrut Patwardhan",
     license="MIT",
-    url="",
+    url="https://github.com/Blazkowiz47/torch-framework-python",
     description="Deep learning project structure generator.",
     long_description=readme,
     long_description_content_type="text/markdown",
