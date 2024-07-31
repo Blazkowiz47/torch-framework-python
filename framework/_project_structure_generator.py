@@ -1,3 +1,4 @@
 import os
 
-def generate_
+
+def generate_directories() -> None: ...

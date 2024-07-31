@@ -28,8 +28,8 @@ extras = {
 setup(
     name="dl-framework-generator",
     version=version,
-    author="Sushrut Patwardhan",
-    maintainer="Sushrut Patwardhan",
+    author=",".join(["Akanksha More", "Sushrut Patwardhan"]),
+    maintainer=",".join(["Akanksha More", "Sushrut Patwardhan"]),
     license="MIT",
     url="https://github.com/Blazkowiz47/torch-framework-python",
     description="Deep learning project structure generator.",

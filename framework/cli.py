@@ -1,3 +1,4 @@
+import os
 import sys
 from typing import Any, List, NoReturn
 
@@ -14,6 +15,7 @@ def main(args: List[str], **kwargs: Any) -> None:
 
 def run(*args: str, **kwargs: Any) -> None:
     print("Running args:", args)
+    print(os.curdir)
     return
 
 
