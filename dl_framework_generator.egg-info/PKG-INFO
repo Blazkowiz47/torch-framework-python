@@ -3,8 +3,8 @@ Name: dl-framework-generator
 Version: 0.0.1
 Summary: Deep learning project structure generator.
 Home-page: https://github.com/Blazkowiz47/torch-framework-python
-Author: Sushrut Patwardhan
-Maintainer: Sushrut Patwardhan
+Author: Akanksha More,Sushrut Patwardhan
+Maintainer: Akanksha More,Sushrut Patwardhan
 License: MIT
 Project-URL: Source, https://github.com/Blazkowiz47/torch-framework-python
 Project-URL: Tracker, https://github.com/Blazkowiz47/torch-framework-python/issues

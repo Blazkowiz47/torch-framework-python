@@ -1,22 +1,22 @@
 import os
 import sys
-from typing import Any, List, NoReturn
+from typing import List, NoReturn
+
+from framework._project_structure_generator import create_project
 
 
-__all__ = (
-    "run",
-    "main",
-)
+__all__ = ("main",)
 
 
-def main(args: List[str], **kwargs: Any) -> None:
-    return run(*args, **kwargs)
-
-
-def run(*args: str, **kwargs: Any) -> None:
+def main(args: List[str]) -> None:
     print("Running args:", args)
-    print(os.curdir)
-    return
+    print(os.curdir, os.getcwd())
+    if args[0] == "create":
+        create_project(args[1:])
+    elif args[0] == "add-dataset":
+        raise NotImplementedError("Not implemented add-dataset yet.")
+    else:
+        raise ValueError("Invalid Arguements.")
 
 
 def entrypoint() -> NoReturn:
