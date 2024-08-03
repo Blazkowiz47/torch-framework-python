@@ -1,14 +1,18 @@
 import os
+from typing import Any, Dict
 
 
-def create_project(args) -> None:
+def create_project(args:Dict[str,Any]) -> None:
     """
     Creates a directory with given project name.
     Generates a deep-learning framework in it.
     """
-    name, *_ = args
-    root_dir = os.path.join(os.getcwd(), name)
-    print("Generating Project:", name)
+    project = args['PROJECT_NAME']
+    dataset = args['DATASET_NAME']
+    model = args['MODEL_NAME']
+
+    root_dir = os.path.join(os.getcwd(), project)
+    print("Generating Project:", project)
     print(root_dir)
 
     os.makedirs(root_dir)
@@ -30,6 +34,26 @@ def create_project(args) -> None:
             [
                 "import torch\n\n\n\n",
                 "def train() -> None:\n",
+                "\traise NotImplementedError()",
+            ]
+        )
+
+    if dataset!="":
+        with open(os.path.join(datasets_dir, dataset+".py"), "w+") as fp:
+            fp.writelines(
+            [
+                "import torch\n\n\n\n",
+                "def dataset() -> None:\n",
+                "\traise NotImplementedError()",
+            ]
+        )
+    
+    if model!="":
+        with open(os.path.join(models_dir, model+".py"), "w+") as fp:
+            fp.writelines(
+            [
+                "import torch\n\n\n\n",
+                "def dataset() -> None:\n",
                 "\traise NotImplementedError()",
             ]
         )
