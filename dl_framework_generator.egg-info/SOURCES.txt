@@ -14,3 +14,4 @@ framework/__main__.py
 framework/_project_structure_generator.py
 framework/_version.py
 framework/cli.py
+tests/test_create_project.py

@@ -1,14 +1,22 @@
 import os
+from typing import Any, Dict
+import argparse
+
+from framework.__generate_files import fileGenerator
+from framework.constants.templates import *
 
 
-def create_project(args) -> None:
+def create_project(args: argparse.Namespace) -> None:
     """
     Creates a directory with given project name.
     Generates a deep-learning framework in it.
     """
-    name, *_ = args
-    root_dir = os.path.join(os.getcwd(), name)
-    print("Generating Project:", name)
+    project = args.name
+    datasets = args.dataset
+    models = args.model
+
+    root_dir = os.path.join(os.getcwd(), project)
+    print("Generating Project:", project)
     print(root_dir)
 
     os.makedirs(root_dir)
@@ -24,12 +32,16 @@ def create_project(args) -> None:
     os.makedirs(models_dir)
     if not os.path.isdir(models_dir):
         raise NotADirectoryError(f"Directory: {models_dir} not found")
+    
+    #generate train.py
+    fileGenerator("train.py", root_dir, TRAIN_TEMPLATE)
 
-    with open(os.path.join(root_dir, "train.py"), "w+") as fp:
-        fp.writelines(
-            [
-                "import torch\n\n\n\n",
-                "def train() -> None:\n",
-                "\traise NotImplementedError()",
-            ]
-        )
+    #generate sample dataset file
+    if len(datasets)>0:
+        for dataset in datasets:
+            fileGenerator(dataset, datasets_dir, DATASET_TEMPLATE)
+    
+    #generate sample model file
+    if len(models)>0:
+        for model in models:
+            fileGenerator(model, models_dir, MODEL_TEMPLATE)
