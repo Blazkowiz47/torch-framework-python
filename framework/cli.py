@@ -1,27 +1,36 @@
 import os
 import sys
-from typing import Dict, List, NoReturn, Any
+import argparse
+from typing import Dict, List, NoReturn, Any, Union
 
 from framework._project_structure_generator import create_project
-from framework.argument_parser import parse_args
-
 
 __all__ = ("main",)
-                
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("action", type=str)
+parser.add_argument("name", type=str, default="")
+parser.add_argument("-d","--dataset",nargs='+',default=["sample"])
+parser.add_argument("-m","--model",nargs='+', default=["sample"])        
 
 def main(args: List[str]) -> None:
     print("Running args:", args)
     print(os.curdir, os.getcwd())
 
     #parse arguments to get dictionary
-    parsedArgs = parse_args(args)
-
-    if args[0] == "create":
-        create_project(parsedArgs)
-    elif args[0] == "add-dataset":
+    if args.action == "create":
+        create_project(args)
+    elif args.action == "add-datset":
         raise NotImplementedError("Not implemented add-dataset yet.")
     else:
         raise ValueError("Invalid Arguements.")
 
 def entrypoint() -> NoReturn:
-    sys.exit(main(sys.argv[1:]))
+
+    #parse arguments
+    args = parser.parse_args()
+    
+    # print(args)
+
+    sys.exit(main(args))
