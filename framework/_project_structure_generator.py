@@ -23,7 +23,7 @@ def create_project(args: argparse.Namespace) -> None:
     if not os.path.isdir(root_dir):
         raise NotADirectoryError(f"Directory: {root_dir} not found")
 
-    datasets_dir = os.path.join(root_dir, "datasets")
+    datasets_dir = os.path.join(root_dir, "cdatasets")
     os.makedirs(datasets_dir)
     if not os.path.isdir(datasets_dir):
         raise NotADirectoryError(f"Directory: {datasets_dir} not found")
@@ -32,16 +32,16 @@ def create_project(args: argparse.Namespace) -> None:
     os.makedirs(models_dir)
     if not os.path.isdir(models_dir):
         raise NotADirectoryError(f"Directory: {models_dir} not found")
-    
-    #generate train.py
+
+    # generate train.py
     fileGenerator("train.py", root_dir, TRAIN_TEMPLATE)
 
-    #generate sample dataset file
-    if len(datasets)>0:
+    # generate sample dataset file
+    if len(datasets) > 0:
         for dataset in datasets:
             fileGenerator(dataset, datasets_dir, DATASET_TEMPLATE)
-    
-    #generate sample model file
-    if len(models)>0:
+
+    # generate sample model file
+    if len(models) > 0:
         for model in models:
             fileGenerator(model, models_dir, MODEL_TEMPLATE)

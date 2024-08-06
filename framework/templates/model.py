@@ -1,10 +1,14 @@
-template:str = '''
+template: str = """from typing import Any, Dict 
+from torch.nn import Conv2d, Module, Sequential
 
-import torch
+class {classname}(Module):
 
-class Model:
-
-    def __init__(self):
+    def __init__(self, config: Dict[str, Any]):
+        super({classname}, self).__init__()
         self.name = "{name}"
+        self.config = config
 
-'''
+    def forward(self, x):
+        raise NotImplementedError()
+"""
+
