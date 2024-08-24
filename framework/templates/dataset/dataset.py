@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 template: str = '''import glob
 import os
 from typing import Any, Dict, List, Optional, Tuple
@@ -7,10 +9,11 @@ import numpy as np
 from PIL import Image
 import torch
 from torch.utils.data import DataLoader
-from utils import DatasetGenerator
+from utils import DatasetGenerator, Wrapper
+from utils.logger import log
 
 
-class {classname}Wrapper:
+class {classname}Wrapper(Wrapper):
     def __init__(
         self,
         config: Dict[str, Any],
@@ -49,6 +52,7 @@ class {classname}Wrapper:
                 ...
         """
 
+        self.name = "{name}"
         self.rdir = "./data/{name}"
         self.classes = [
             cid
@@ -103,3 +107,13 @@ class {classname}Wrapper:
 
         return torch.tensor(imgarray).float(), torch.tensor(label).float()
 '''
+
+
+@dataclass
+class FileArgs:
+    """
+    Defines the dictionary for named format arguements.
+    """
+
+    classname: str
+    name: str

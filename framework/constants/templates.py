@@ -1,11 +1,3 @@
-from ..templates import dataset, model, train
+from ..templates import dataset, model, train, utils
 
-templateDict = {
-    "dataset": dataset.template,
-    "model": model.template,
-    "train": train.template
-}
-
-TRAIN_TEMPLATE = "train"
-DATASET_TEMPLATE = "dataset"
-MODEL_TEMPLATE = "model"
+__all__ = ["dataset", "model", "train", "utils"]

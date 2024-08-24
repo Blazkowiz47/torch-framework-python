@@ -9,6 +9,7 @@ dl_framework_generator.egg-info/entry_points.txt
 dl_framework_generator.egg-info/not-zip-safe
 dl_framework_generator.egg-info/requires.txt
 dl_framework_generator.egg-info/top_level.txt
+framework/__generate_files.py
 framework/__init__.py
 framework/__main__.py
 framework/_project_structure_generator.py

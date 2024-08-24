@@ -3,6 +3,7 @@ Main training file.
 calls the train pipeline with configs.
 """
 import argparse
+import datetime
 
 import numpy as np
 import torch
@@ -109,6 +110,8 @@ def main():
     Wrapper for the driver.
     """
     args = parser.parse_args()
+    logger.log = logger.get_logger(args.model + str(datetime.datetime.now()).replace(' ', '_'))
+    log = logger.log
 
     with open(args.config, "r") as fp:
         config = yaml.safe_load(fp)
@@ -117,12 +120,12 @@ def main():
     initialise_dirs()
     set_seeds(args.seed or config["seed"])
     epochs = args.epochs or config["epochs"]
-    batch_size = args.batch_size or config["batch-size"]
     validate_after_epochs = args.validate_after_epochs or config['validate_after_epochs'] 
 
     device = "cuda"     # You can change this to cpu.
 
     model = get_model(args.model, config).to(device)
+    log.info(str(model))
     wrapper = get_dataset(args.dataset, config)
     
     trainds = wrapper.get_split("train")
@@ -153,8 +156,8 @@ def main():
             metric.step(preds, label)
             train_losses.append(step_loss)
 
-        logger.info(f'Average train step loss: {np.mean(train_losses)}')
-        logger.info(f'Average train accuracy: {metric.compute()}')
+        log.info(f'Average train step loss: {np.mean(train_losses)}')
+        log.info(f'Average train accuracy: {metric.compute()}')
         metric.reset() 
 
         if not epoch % validate_after_epochs:
@@ -170,8 +173,8 @@ def main():
                 metric.step(preds, label)
                 validation_losses.append(step_loss)
 
-            logger.info(f'Average validation step loss: {np.mean(validation_losses)}')
-            logger.info(f'Average validation accuracy: {metric.compute()}')
+            log.info(f'Average validation step loss: {np.mean(validation_losses)}')
+            log.info(f'Average validation accuracy: {metric.compute()}')
         
        
         # add wandb logs if any
