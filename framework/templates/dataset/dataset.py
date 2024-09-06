@@ -9,8 +9,7 @@ import numpy as np
 from PIL import Image
 import torch
 from torch.utils.data import DataLoader
-from utils import DatasetGenerator, Wrapper
-from utils.logger import log
+from utils import DatasetGenerator, Wrapper, log
 
 
 class {classname}Wrapper(Wrapper):

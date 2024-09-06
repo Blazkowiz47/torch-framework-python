@@ -1,13 +1,13 @@
 template: str = '''import os
 import random
 from abc import abstractmethod
-from typing import Any, Callable, List, Optional, Tuple
+from typing import Any, Callable, Iterable, List, Optional, Tuple
 
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset
 
-from utils.logger import log
+from utils import log
 
 
 def set_seeds(seed: int = 2024):
@@ -92,7 +92,7 @@ class Wrapper:
         raise NotImplementedError()
 
     @abstractmethod
-    def transform(self, datapoint: Tuple[str, int]) -> Tuple:
+    def transform(self, datapoint: Iterable[Any]) -> Tuple:
         """
         Transforms the given datapoint.
         """

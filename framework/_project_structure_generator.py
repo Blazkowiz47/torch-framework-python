@@ -2,8 +2,8 @@ import os
 from typing import List
 import argparse
 
-from .__generate_files import fileGenerator
-import framework.constants.templates as tp
+from ._generate_files import fileGenerator
+from .constants import templates as tp
 
 
 def generate_dataset_init(datasets: List[str], dataset_dir: str) -> None:
@@ -73,6 +73,7 @@ def create_project(args: argparse.Namespace) -> None:
 
     # generate train.py
     fileGenerator("train.py", root_dir, tp.train.template)
+    fileGenerator("pyrightconfig.json", root_dir, tp.pyrightconfig.template)
 
     # generate datasets
     datasets_dir = os.path.join(root_dir, "cdatasets")

@@ -3,7 +3,7 @@ from dataclasses import dataclass
 template: str = """from typing import Any, Dict 
 from torch.nn import Conv2d, Module, Sequential
 
-from utils.logger import log
+from utils import log
 
 class {classname}(Module):
 

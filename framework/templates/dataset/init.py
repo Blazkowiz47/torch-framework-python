@@ -1,5 +1,4 @@
-starting_template: str = """
-from typing import Any, Dict
+starting_template: str = """from typing import Any, Dict
 from utils import Wrapper
 
 

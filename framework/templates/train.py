@@ -192,9 +192,6 @@ def main():
     #        },
     #    )
 
-    for epoch in range(epochs):
-
-
     # if wandb_run_name:
     #     wandb.finish()
 
