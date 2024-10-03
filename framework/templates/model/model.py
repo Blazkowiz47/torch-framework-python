@@ -13,7 +13,7 @@ class {classname}(Module):
         self.config = config
         self.log = log
         self.kwargs = kwargs
-        self.log.debug(f"Initialised {self.name} model.")
+        self.log.debug("Initialised {name} model.")
 
     def forward(self, x):
         raise NotImplementedError()

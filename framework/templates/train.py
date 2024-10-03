@@ -3,7 +3,6 @@ Main training file.
 calls the train pipeline with configs.
 """
 import argparse
-import datetime
 
 import numpy as np
 import torch

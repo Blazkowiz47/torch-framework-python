@@ -1,6 +1,7 @@
+import argparse
 import os
 from typing import List
-import argparse
+import shutil
 
 from ._generate_files import fileGenerator
 from .constants import templates as tp
@@ -62,43 +63,46 @@ def create_project(args: argparse.Namespace) -> None:
     project = args.name
     datasets = args.dataset
     models = args.model
-
     root_dir = os.path.join(os.getcwd(), project)
     print("Generating Project:", project)
     print(root_dir)
 
-    os.makedirs(root_dir)
-    if not os.path.isdir(root_dir):
-        raise NotADirectoryError(f"Directory: {root_dir} not found")
+    try:
+        os.makedirs(root_dir)
+        if not os.path.isdir(root_dir):
+            raise NotADirectoryError(f"Directory: {root_dir} not found")
 
-    # generate train.py
-    fileGenerator("train.py", root_dir, tp.train.template)
-    fileGenerator("pyrightconfig.json", root_dir, tp.pyrightconfig.template)
+        # generate train.py
+        fileGenerator("train.py", root_dir, tp.train.template)
+        fileGenerator("pyrightconfig.json", root_dir, tp.pyrightconfig.template)
 
-    # generate datasets
-    datasets_dir = os.path.join(root_dir, "cdatasets")
-    os.makedirs(datasets_dir)
-    if not os.path.isdir(datasets_dir):
-        raise NotADirectoryError(f"Directory: {datasets_dir} not found")
+        # generate datasets
+        datasets_dir = os.path.join(root_dir, "cdatasets")
+        os.makedirs(datasets_dir)
+        if not os.path.isdir(datasets_dir):
+            raise NotADirectoryError(f"Directory: {datasets_dir} not found")
 
-    if len(datasets) > 0:
-        for dataset in datasets:
-            generate_dataset(dataset, datasets_dir)
-        generate_dataset_init(datasets, datasets_dir)
+        if len(datasets) > 0:
+            for dataset in datasets:
+                generate_dataset(dataset, datasets_dir)
+            generate_dataset_init(datasets, datasets_dir)
 
-    # generate models
-    models_dir = os.path.join(root_dir, "models")
-    os.makedirs(models_dir)
-    if not os.path.isdir(models_dir):
-        raise NotADirectoryError(f"Directory: {models_dir} not found")
-    if len(models) > 0:
-        for model in models:
-            generate_model(model, models_dir)
-        generate_model_init(models, models_dir)
+        # generate models
+        models_dir = os.path.join(root_dir, "models")
+        os.makedirs(models_dir)
+        if not os.path.isdir(models_dir):
+            raise NotADirectoryError(f"Directory: {models_dir} not found")
+        if len(models) > 0:
+            for model in models:
+                generate_model(model, models_dir)
+            generate_model_init(models, models_dir)
 
-    # generate utils
-    utils_dir = os.path.join(root_dir, "utils")
-    os.makedirs(utils_dir)
-    if not os.path.isdir(utils_dir):
-        raise NotADirectoryError(f"Directory: {utils_dir} not found")
-    generate_utils(utils_dir)
+        # generate utils
+        utils_dir = os.path.join(root_dir, "utils")
+        os.makedirs(utils_dir)
+        if not os.path.isdir(utils_dir):
+            raise NotADirectoryError(f"Directory: {utils_dir} not found")
+        generate_utils(utils_dir)
+    except Exception as e:
+        shutil.rmtree(root_dir)
+        raise e

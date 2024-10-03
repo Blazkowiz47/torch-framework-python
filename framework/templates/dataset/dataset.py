@@ -84,9 +84,9 @@ class {classname}Wrapper(Wrapper):
             self, split:str, batch_size: Optional[int] = None, num_workers: Optional[int] = None
     ) -> DataLoader:
         batch_size = batch_size or self.batch_size
-        self.log.debug(f"Looping through {split} split.")
+        self.log.debug(f"Looping through %s split." % split)
         data = self.loop_splitset(split)
-        self.log.debug(f"Data-length for {split} split: {len(data)}")
+        self.log.debug(f"Data-length for %s split: %d" % (split, len(data)))
         return DataLoader(
             DatasetGenerator(data, self.transform),
             num_workers=num_workers or self.num_workers,
