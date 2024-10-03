@@ -1,18 +1,13 @@
 template: str = """import logging
+import os
 
-log: logging.Logger = None
 
-
-def get_logger(name: str) -> logging.Logger:
-    logger = logging.getLogger(name)
-    logger.setLevel("DEBUG")
+def get_logger(logfile: str, level: str = "DEBUG") -> logging.Logger:
+    logger = logging.getLogger(logfile.split("/")[-2])
+    logger.setLevel(level)
 
     console_handler = logging.StreamHandler()
-    file_handler = logging.FileHandler(
-        f"tmp/logs/{name}.log", mode="a", encoding="utf-8"
-    )
-    logger.addHandler(console_handler)
-    logger.addHandler(file_handler)
+    file_handler = logging.FileHandler(logfile, mode="a+", encoding="utf-8")
     formatter = logging.Formatter(
         "{asctime} - {levelname} - {message}",
         style="{",
@@ -21,8 +16,10 @@ def get_logger(name: str) -> logging.Logger:
     console_handler.setFormatter(formatter)
     file_handler.setFormatter(formatter)
 
-    console_handler.setLevel("DEBUG")
-    file_handler.setLevel("INFO")
+    console_handler.setLevel(level)
+    file_handler.setLevel(logging.DEBUG)
+    logger.addHandler(console_handler)
+    logger.addHandler(file_handler)
 
     return logger
 """

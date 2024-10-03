@@ -1,17 +1,17 @@
-starting_template: str = """
+starting_template: str = """from logging import Logger
 from typing import Any, Dict
 from torch.nn import Module
 
 
-def get_model(model: str, config: Dict[str, Any]) -> Module:
+def get_model(model: str, config: Dict[str, Any], log: Logger, **kwargs) -> Module:
 """
 
 
 if_statement: str = """
     if model == "{name}":
-        from models.{name} import Attnnet
+        from models.{name} import {classname} 
 
-        return {classname}(config)
+        return {classname}(config, log, **kwargs)
 """
 
 end_of_if: str = """
