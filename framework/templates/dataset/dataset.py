@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
-template: str = '''import glob
+template: str = '''from logging import Logger
+from pathlib import Path
 import os
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -9,14 +10,15 @@ import numpy as np
 from PIL import Image
 import torch
 from torch.utils.data import DataLoader
-from utils import DatasetGenerator, Wrapper
-from utils.logger import log
+from utils import DatasetGenerator, Wrapper, image_extensions
 
 
 class {classname}Wrapper(Wrapper):
     def __init__(
         self,
         config: Dict[str, Any],
+        log: Logger, 
+        **kwargs,
     ):
         """
         This is a demo wrapper.
@@ -57,7 +59,7 @@ class {classname}Wrapper(Wrapper):
         self.classes = [
             cid
             for cid in os.listdir(self.rdir)
-            if os.path.isdir(os.path.join(self.rdir, cid))
+            if os.path.isdir(os.path.join(self.rdir, cid)) and '.' not in cid
         ]
         self.classes.sort()
         self.num_classes = len(self.classes)
@@ -68,11 +70,11 @@ class {classname}Wrapper(Wrapper):
     def loop_splitset(self, ssplit: str) -> List[Any]:
         data: List[Any] = []
         for cid_lbl, cid in enumerate(self.classes):
-            datapoints = (
-                glob.glob(os.path.join(self.rdir, cid, ssplit, "*.png"))
-                + glob.glob(os.path.join(self.rdir, cid, ssplit, "*.jpg"))
-                + glob.glob(os.path.join(self.rdir, cid, ssplit, "*.jpeg"))
-            )
+            datapoints = [
+                str(file)
+                for file in Path(os.path.join(self.rdir, cid, ssplit)).glob("*")
+                if file.suffix.lower() in image_extensions
+            ]
             for point in datapoints:
                 data.append((point, cid_lbl))
 
@@ -82,7 +84,9 @@ class {classname}Wrapper(Wrapper):
             self, split:str, batch_size: Optional[int] = None, num_workers: Optional[int] = None
     ) -> DataLoader:
         batch_size = batch_size or self.batch_size
+        self.log.debug(f"Looping through %s split." % split)
         data = self.loop_splitset(split)
+        self.log.debug(f"Data-length for %s split: %d" % (split, len(data)))
         return DataLoader(
             DatasetGenerator(data, self.transform),
             num_workers=num_workers or self.num_workers,

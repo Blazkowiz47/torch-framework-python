@@ -1,0 +1,6 @@
+template: str = """{
+    "executionEnvironments": [
+        {"root": "."}
+    ]
+}
+"""

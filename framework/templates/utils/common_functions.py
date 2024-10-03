@@ -1,21 +1,25 @@
-template: str = '''import os
+template: str = '''from datetime import datetime
+from logging import Logger
+import os
 import random
 from abc import abstractmethod
-from typing import Any, Callable, List, Optional, Tuple
+from typing import Any, Callable, Iterable, List, Optional, Tuple
 
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset
 
-from utils.logger import log
+
+image_extensions:List[str] = ['.jpg', '.png', '.jpeg']
+video_extensions:List[str] = ['.mov', '.mp4']
 
 
-def set_seeds(seed: int = 2024):
+def set_seeds(log: Logger, seed: int = 2024):
     """
     Sets random sets for torch operations.
 
     Args:
-        seed (int, optional): Random seed to set. Defaults to 42.
+        seed (int, optional): Random seed to set. Defaults to 2024.
     """
     log.debug(f"Setting seed to: {seed}")
     # Set the seed for general torch operations
@@ -26,12 +30,15 @@ def set_seeds(seed: int = 2024):
     np.random.seed(seed)
 
 
-def initialise_dirs():
+def get_run_name(model: str, dataset: str) -> str:
+    return f"{model}_{dataset}_{str(datetime.now()).replace(' ', '-')}"
+
+
+def initialise_dirs(model_name: str):
     """
     Initialises all the required directories.
     """
-    os.makedirs("tmp", exist_ok=True)
-    os.makedirs("tmp/logs", exist_ok=True)
+    os.makedirs(f"tmp/{model_name}/checkpoints", exist_ok=True)
 
 
 class DatasetGenerator(Dataset):
@@ -49,10 +56,17 @@ class DatasetGenerator(Dataset):
 
 class Wrapper:
     def __init__(
-        self, rdir: str = "", batch_size: int = 1, num_workers: int = 1
+        self,
+        log: Logger,
+        rdir: str = "",
+        batch_size: int = 1,
+        num_workers: int = 1,
+        num_classes: Optional[int] = None,
     ) -> None:
         self.batch_size = batch_size
+        self.log = log
         self.num_workers = num_workers
+        self.num_classes = None
         self.rdir = rdir
         self.name = ""
 
@@ -74,10 +88,10 @@ class Wrapper:
         """
         Generates the given split.
         """
-        log.debug(f"Generating {split} split for {self.name} dataset.")
+        self.log.debug(f"Generating {split} split for {self.name} dataset.")
         batch_size = batch_size or self.batch_size
         data = self.loop_splitset(split)
-        log.debug(f"Total files: {len(data)}")
+        self.log.debug(f"Total files: {len(data)}")
         return DataLoader(
             DatasetGenerator(data, self.transform),
             num_workers=num_workers or self.num_workers,
@@ -92,7 +106,7 @@ class Wrapper:
         raise NotImplementedError()
 
     @abstractmethod
-    def transform(self, datapoint: Tuple[str, int]) -> Tuple:
+    def transform(self, datapoint: Iterable[Any]) -> Tuple:
         """
         Transforms the given datapoint.
         """

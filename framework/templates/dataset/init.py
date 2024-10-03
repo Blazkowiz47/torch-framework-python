@@ -1,9 +1,9 @@
-starting_template: str = """
+starting_template: str = """from logging import Logger
 from typing import Any, Dict
 from utils import Wrapper
 
 
-def get_dataset(dataset: str, config: Dict[str, Any]) -> Wrapper:
+def get_dataset(dataset: str, config: Dict[str, Any], log: Logger, **kwargs) -> Wrapper:
 """
 
 
@@ -11,7 +11,7 @@ if_statement: str = """
     if dataset == "{name}":
         from cdatasets.{name} import {classname}Wrapper
 
-        return {classname}Wrapper(config)
+        return {classname}Wrapper(config, log, **kwargs)
 """
 
 end_of_if: str = """

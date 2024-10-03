@@ -3,7 +3,6 @@ Main training file.
 calls the train pipeline with configs.
 """
 import argparse
-import datetime
 
 import numpy as np
 import torch
@@ -17,7 +16,7 @@ import yaml
 
 from models  import get_model 
 from cdatasets import get_dataset 
-from utils import logger, set_seeds, initialise_dirs
+from utils import logger, set_seeds, initialise_dirs, get_run_name
 
 
 parser = argparse.ArgumentParser(
@@ -110,23 +109,39 @@ def main():
     Wrapper for the driver.
     """
     args = parser.parse_args()
-    logger.log = logger.get_logger(args.model + str(datetime.datetime.now()).replace(' ', '_'))
-    log = logger.log
 
     with open(args.config, "r") as fp:
         config = yaml.safe_load(fp)
 
 
-    initialise_dirs()
+    model_name: str = args.model_name or get_run_name(args.model, args.dataset)
+    initialise_dirs(model_name)
+    logfile = f"tmp/{model_name}/train.log"
+    ckptdir = f"tmp/{model_name}/checkpoints"
+    log = logger.get_logger(logfile, args.logger_level)
+
+    # Uncomment following line if you use wandb
+    # wandb_run_name = args.wandb_run_name
+    # if wandb_run_name:
+    #    wandb.init(
+    #        # set the wandb project where this run will be logged
+    #        project="<PROJECT-NAME>",
+    #        name=wandb_run_name,
+    #        config={
+    #            **config,
+    #            "dataset": args.dataset,
+    #        },
+    #    )
+
     set_seeds(args.seed or config["seed"])
     epochs = args.epochs or config["epochs"]
     validate_after_epochs = args.validate_after_epochs or config['validate_after_epochs'] 
 
     device = "cuda"     # You can change this to cpu.
 
-    model = get_model(args.model, config).to(device)
+    model = get_model(args.model, config, log).to(device)
     log.info(str(model))
-    wrapper = get_dataset(args.dataset, config)
+    wrapper = get_dataset(args.dataset, config, log)
     
     trainds = wrapper.get_split("train")
     validationds = wrapper.get_split("validation")
@@ -175,26 +190,10 @@ def main():
 
             log.info(f'Average validation step loss: {np.mean(validation_losses)}')
             log.info(f'Average validation accuracy: {metric.compute()}')
-        
-       
         # add wandb logs if any
 
+
     # Uncomment following line if you use wandb
-    # wandb_run_name = args.wandb_run_name
-    # if wandb_run_name:
-    #    wandb.init(
-    #        # set the wandb project where this run will be logged
-    #        project="<PROJECT-NAME>",
-    #        name=wandb_run_name,
-    #        config={
-    #            **config,
-    #            "dataset": args.dataset,
-    #        },
-    #    )
-
-    for epoch in range(epochs):
-
-
     # if wandb_run_name:
     #     wandb.finish()
 

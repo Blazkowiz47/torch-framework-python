@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: dl-framework-generator
-Version: 0.0.1
+Version: 0.0.3
 Summary: Deep learning project structure generator.
 Home-page: https://github.com/Blazkowiz47/torch-framework-python
 Author: Akanksha More,Sushrut Patwardhan
