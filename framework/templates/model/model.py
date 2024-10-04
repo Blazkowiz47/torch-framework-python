@@ -12,7 +12,7 @@ class {classname}(Module):
         self.name = "{name}"
         self.config = config
         self.log = log
-        self.kwargs = kwargs
+        self.kwargs: Dict[str, Any] = kwargs
         self.log.debug("Initialised {name} model.")
 
     def forward(self, x):

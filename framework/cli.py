@@ -3,7 +3,7 @@ import os
 import sys
 from typing import NoReturn
 
-from ._project_structure_generator import create_project, add_action
+from framework._project_structure_generator import create_project, add_action
 
 __all__ = ("main",)
 

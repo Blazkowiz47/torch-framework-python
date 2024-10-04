@@ -56,6 +56,7 @@ class {classname}Wrapper(Wrapper):
 
         self.name = "{name}"
         self.log = log
+        self.kwargs: Dict[str, Any] = kwargs
         self.rdir = "./data/{name}"
         self.classes = [
             cid
