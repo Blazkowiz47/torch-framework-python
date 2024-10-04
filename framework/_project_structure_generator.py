@@ -106,3 +106,43 @@ def create_project(args: argparse.Namespace) -> None:
     except Exception as e:
         shutil.rmtree(root_dir)
         raise e
+
+
+def add_action(args: argparse.Namespace) -> None:
+    datasets = args.dataset
+    models = args.model
+    root_dir = os.getcwd()
+    print("Adding in:", root_dir)
+
+    if datasets:
+        # generate datasets
+        datasets_dir = os.path.join(root_dir, "cdatasets")
+        os.makedirs(datasets_dir, exist_ok=True)
+        if not os.path.isdir(datasets_dir):
+            raise NotADirectoryError(f"Directory: {datasets_dir} not found")
+
+        if len(datasets) > 0:
+            for dataset in datasets:
+                generate_dataset(dataset, datasets_dir)
+            datasets = [
+                dataset[:-3]
+                for dataset in os.listdir(datasets_dir)
+                if "_" not in dataset and dataset.endswith(".py")
+            ]
+            generate_dataset_init(datasets, datasets_dir)
+
+    if models:
+        # generate models
+        models_dir = os.path.join(root_dir, "models")
+        os.makedirs(models_dir, exist_ok=True)
+        if not os.path.isdir(models_dir):
+            raise NotADirectoryError(f"Directory: {models_dir} not found")
+        if len(models) > 0:
+            for model in models:
+                generate_model(model, models_dir)
+            models = [
+                model[:-3]
+                for model in os.listdir(models_dir)
+                if "_" not in model and model.endswith(".py")
+            ]
+            generate_model_init(models, models_dir)
