@@ -3,7 +3,7 @@ from dataclasses import dataclass
 template: str = '''from logging import Logger
 from pathlib import Path
 import os
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 import cv2
 import numpy as np
@@ -55,6 +55,7 @@ class {classname}Wrapper(Wrapper):
         """
 
         self.name = "{name}"
+        self.log = log
         self.rdir = "./data/{name}"
         self.classes = [
             cid
@@ -84,19 +85,19 @@ class {classname}Wrapper(Wrapper):
             self, split:str, batch_size: Optional[int] = None, num_workers: Optional[int] = None
     ) -> DataLoader:
         batch_size = batch_size or self.batch_size
-        self.log.debug(f"Looping through %s split." % split)
+        self.log.debug("Looping through %s split." % split)
         data = self.loop_splitset(split)
-        self.log.debug(f"Data-length for %s split: %d" % (split, len(data)))
+        self.log.debug("Data-length for %s split: %d" % (split, len(data)))
         return DataLoader(
             DatasetGenerator(data, self.transform),
             num_workers=num_workers or self.num_workers,
             batch_size=batch_size or self.batch_size,
         )
 
-    def augment(self, image):
+    def augment(self, image: Any) -> Any:
         return image
 
-    def transform(self, datapoint: Tuple[str, int]) -> Tuple:
+    def transform(self, datapoint: Iterable[Any]) -> Tuple:
         fname, lbl = datapoint
 
         # Initialise label

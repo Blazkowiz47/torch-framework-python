@@ -12,6 +12,13 @@ or
 
 # Usage: 
 To generate a template project, you can run: 
-`framework create <PROJECT_NAME> -d <SAMPLE_DATASET_NAME>  -m <SAMPLE_MODEL_NAME>`
+`framework create -p <PROJECT_NAME> -d <SAMPLE_DATASET_NAME>  -m <SAMPLE_MODEL_NAME>`
+
+To add custom datasets into and existing project:
+`framework add -d <DATASET_NAME>`
+
+To add custom models into and existing project:
+`framework add -m <MODEL_NAME>`
+
 
 
