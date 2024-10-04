@@ -4,7 +4,7 @@ from typing import List
 import shutil
 
 from framework._generate_files import fileGenerator
-import templates as tp
+import framework.templates as tp
 
 
 def generate_dataset_init(datasets: List[str], dataset_dir: str) -> None:
