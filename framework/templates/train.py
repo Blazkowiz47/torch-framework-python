@@ -42,7 +42,7 @@ parser.add_argument(
 
 parser.add_argument(
     "-d",
-    "--datset",
+    "--dataset",
     default="sample",
     type=str,
     help="""
