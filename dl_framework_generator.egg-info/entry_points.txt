@@ -1,3 +1,0 @@
-[console_scripts]
-framework = framework.cli:entrypoint
-framework-python = framework.cli:entrypoint
