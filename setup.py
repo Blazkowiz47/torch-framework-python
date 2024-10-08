@@ -35,7 +35,7 @@ setup(
     description="Deep learning project structure generator.",
     long_description=readme,
     long_description_content_type="text/markdown",
-    packages=["framework"],
+    packages=["framework", "framework.templates"],
     python_requires=">=3.6",
     package_data={"": ["py.typed"]},
     include_package_data=True,
