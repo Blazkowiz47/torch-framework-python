@@ -5,54 +5,53 @@ import shutil
 
 from framework._generate_files import fileGenerator
 import framework.templates as tp
+import framework.templates.dataset as ds
+import framework.templates.model as md
+import framework.templates.utils as ut
 
 
 def generate_dataset_init(datasets: List[str], dataset_dir: str) -> None:
-    template: str = tp.dataset.starting_template
+    template: str = ds.starting_template
     for dataset in datasets:
         template += "\n"
-        fileArgs = tp.dataset.FileArgs(
-            name=dataset, classname=dataset[0].upper() + dataset[1:]
-        )
-        template += tp.dataset.if_statement.format(**fileArgs.__dict__)
+        fileArgs = ds.FileArgs(name=dataset, classname=dataset[0].upper() + dataset[1:])
+        template += ds.if_statement.format(**fileArgs.__dict__)
 
     template += "\n"
-    template += tp.dataset.end_of_if
+    template += ds.end_of_if
 
     fileGenerator("__init__.py", dataset_dir, template)
 
 
 def generate_model_init(models: List[str], model_dir: str) -> None:
-    template: str = tp.model.starting_template
+    template: str = md.starting_template
     for model in models:
         template += "\n"
-        fileArgs = tp.model.FileArgs(name=model, classname=model[0].upper() + model[1:])
-        template += tp.model.if_statement.format(**fileArgs.__dict__)
+        fileArgs = md.FileArgs(name=model, classname=model[0].upper() + model[1:])
+        template += md.if_statement.format(**fileArgs.__dict__)
 
     template += "\n"
-    template += tp.model.end_of_if
+    template += md.end_of_if
 
     fileGenerator("__init__.py", model_dir, template)
 
 
 def generate_dataset(dataset: str, dataset_dir: str) -> None:
-    template = tp.dataset.template
-    fileArgs = tp.dataset.FileArgs(
-        name=dataset, classname=dataset[0].upper() + dataset[1:]
-    )
+    template = ds.template
+    fileArgs = ds.FileArgs(name=dataset, classname=dataset[0].upper() + dataset[1:])
     fileGenerator(dataset + ".py", dataset_dir, template, fileArgs.__dict__)
 
 
 def generate_model(model: str, model_dir: str) -> None:
-    template = tp.model.template
-    fileArgs = tp.model.FileArgs(name=model, classname=model[0].upper() + model[1:])
+    template = md.template
+    fileArgs = md.FileArgs(name=model, classname=model[0].upper() + model[1:])
     fileGenerator(model + ".py", model_dir, template, fileArgs.__dict__)
 
 
 def generate_utils(util_dir: str) -> None:
-    fileGenerator("__init__.py", util_dir, tp.utils.init.template)
-    fileGenerator("logger.py", util_dir, tp.utils.logger.template)
-    fileGenerator("common_functions.py", util_dir, tp.utils.common_functions.template)
+    fileGenerator("__init__.py", util_dir, ut.init.template)
+    fileGenerator("logger.py", util_dir, ut.logger.template)
+    fileGenerator("common_functions.py", util_dir, ut.common_functions.template)
 
 
 def create_project(args: argparse.Namespace) -> None:
