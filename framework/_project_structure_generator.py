@@ -4,10 +4,11 @@ from typing import List
 import shutil
 
 from framework._generate_files import fileGenerator
-import framework.templates as tp
 
 
 def generate_dataset_init(datasets: List[str], dataset_dir: str) -> None:
+    import framework.templates as tp
+
     template: str = tp.dataset.starting_template
     for dataset in datasets:
         template += "\n"
@@ -23,6 +24,8 @@ def generate_dataset_init(datasets: List[str], dataset_dir: str) -> None:
 
 
 def generate_model_init(models: List[str], model_dir: str) -> None:
+    import framework.templates as tp
+
     template: str = tp.model.starting_template
     for model in models:
         template += "\n"
@@ -36,6 +39,8 @@ def generate_model_init(models: List[str], model_dir: str) -> None:
 
 
 def generate_dataset(dataset: str, dataset_dir: str) -> None:
+    import framework.templates as tp
+
     template = tp.dataset.template
     fileArgs = tp.dataset.FileArgs(
         name=dataset, classname=dataset[0].upper() + dataset[1:]
@@ -44,18 +49,24 @@ def generate_dataset(dataset: str, dataset_dir: str) -> None:
 
 
 def generate_model(model: str, model_dir: str) -> None:
+    import framework.templates as tp
+
     template = tp.model.template
     fileArgs = tp.model.FileArgs(name=model, classname=model[0].upper() + model[1:])
     fileGenerator(model + ".py", model_dir, template, fileArgs.__dict__)
 
 
 def generate_utils(util_dir: str) -> None:
+    import framework.templates as tp
+
     fileGenerator("__init__.py", util_dir, tp.utils.init.template)
     fileGenerator("logger.py", util_dir, tp.utils.logger.template)
     fileGenerator("common_functions.py", util_dir, tp.utils.common_functions.template)
 
 
 def create_project(args: argparse.Namespace) -> None:
+    import framework.templates as tp
+
     """
     Creates a directory with given project name.
     Generates a deep-learning framework in it.
